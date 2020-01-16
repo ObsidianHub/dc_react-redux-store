@@ -1,9 +1,10 @@
 import React from "react";
+import "./book-list-item.css";
 
 const BookListItem = ({ book }) => {
   const { title, author, price, coverImage } = book;
   return (
-    <div>
+    <div className="book-list-item">
       <div className="book-cover">
         <img src={coverImage} alt="cover" />
       </div>
