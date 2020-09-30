@@ -6,6 +6,14 @@ const initialState = {
   orderTotal: 220,
 };
 
+const updateCartItems = (cartItems, item, idx) => {
+  if (idx === -1) {
+    return [...cartItems, item];
+  }
+
+  return [...cartItems.slice(0, idx), item, ...cartItems.slice(idx + 1)];
+};
+
 const reducer = (state = initialState, action) => {
   console.log(action.type);
 
@@ -54,21 +62,10 @@ const reducer = (state = initialState, action) => {
         };
       }
 
-      if (itemIndex < 0) {
-        return {
-          ...state,
-          cartItems: [...state.cartItems, newItem],
-        };
-      } else {
-        return {
-          ...state,
-          cartItems: [
-            ...state.cartItems.slice(0, itemIndex),
-            newItem,
-            ...state.cartItems.slice(itemIndex + 1),
-          ],
-        };
-      }
+      return {
+        ...state,
+        cartItems: updateCartItems(state.cartItems, item, itemIndex),
+      };
 
     default:
       return state;
