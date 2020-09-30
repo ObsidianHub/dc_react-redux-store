@@ -14,6 +14,17 @@ const updateCartItems = (cartItems, item, idx) => {
   return [...cartItems.slice(0, idx), item, ...cartItems.slice(idx + 1)];
 };
 
+const updateCartItem = (book, item) => {
+  const { id = book.id, count = 0, title = book.title, total = 0 } = item;
+
+  return {
+    id,
+    title,
+    count: count + 1,
+    total: total + book.price,
+  };
+};
+
 const reducer = (state = initialState, action) => {
   console.log(action.type);
 
@@ -45,26 +56,10 @@ const reducer = (state = initialState, action) => {
       const itemIndex = state.cartItems.findIndex(({ id }) => id === bookId);
       const item = state.cartItems[itemIndex];
 
-      let newItem;
-
-      if (item) {
-        newItem = {
-          ...item,
-          count: item.count + 1,
-          total: item.total + book.price,
-        };
-      } else {
-        newItem = {
-          id: book.id,
-          title: book.title,
-          count: 1,
-          total: book.price,
-        };
-      }
-
+      const newItem = updateCartItem(book, item);
       return {
         ...state,
-        cartItems: updateCartItems(state.cartItems, item, itemIndex),
+        cartItems: updateCartItems(state.cartItems, newItem, itemIndex),
       };
 
     default:
